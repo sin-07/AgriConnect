@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 33, 37, 41;
+  --background-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-600 text-white px-6 py-2.5 rounded-lg font-medium
+           hover:bg-primary-700 focus:ring-4 focus:ring-primary-200
+           hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]
+           transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
+           disabled:hover:scale-100 disabled:hover:shadow-none;
+  }
+
+  .btn-secondary {
+    @apply bg-earth-500 text-white px-6 py-2.5 rounded-lg font-medium
+           hover:bg-earth-600 focus:ring-4 focus:ring-earth-200
+           hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]
+           transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary-600 text-primary-600 px-6 py-2.5 rounded-lg font-medium
+           hover:bg-primary-50 focus:ring-4 focus:ring-primary-200
+           hover:scale-[1.02] active:scale-[0.98]
+           transition-all duration-200;
+  }
+
+  .btn-danger {
+    @apply bg-red-600 text-white px-6 py-2.5 rounded-lg font-medium
+           hover:bg-red-700 focus:ring-4 focus:ring-red-200
+           hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]
+           transition-all duration-200;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-2.5 border border-gray-300 rounded-lg
+           focus:ring-2 focus:ring-primary-500 focus:border-primary-500
+           focus:shadow-sm
+           outline-none transition-all duration-200
+           placeholder:text-gray-400;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-md border border-gray-100
+           hover:shadow-lg transition-shadow duration-300;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-green {
+    @apply badge bg-green-100 text-green-800;
+  }
+
+  .badge-blue {
+    @apply badge bg-blue-100 text-blue-800;
+  }
+
+  .badge-yellow {
+    @apply badge bg-yellow-100 text-yellow-800;
+  }
+
+  .badge-red {
+    @apply badge bg-red-100 text-red-800;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar — used for sticky category pills */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ─── Animations ────────────────────────────────────────────────────────── */
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+
+@keyframes fade-in-fast {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.animate-fade-in-fast { animation: fade-in-fast 0.25s ease both; }
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up { animation: slide-up 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-down { animation: slide-down 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+
+@keyframes slide-left {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-left { animation: slide-left 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+
+@keyframes slide-right {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-right { animation: slide-right 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.animate-scale-in { animation: scale-in 0.35s cubic-bezier(0.22,1,0.36,1) both; }
+
+@keyframes hero-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.animate-hero-left { animation: hero-left 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+
+@keyframes hero-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.animate-hero-right { animation: hero-right 0.7s 0.2s cubic-bezier(0.22,1,0.36,1) both; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-14px) rotate(3deg); }
+  66%       { transform: translateY(-8px) rotate(-2deg); }
+}
+.animate-float { animation: float 6s ease-in-out infinite; }
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.08); }
+}
+.animate-pulse-slow { animation: pulse-slow 5s ease-in-out infinite; }
+
+@keyframes nav-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-nav-down { animation: nav-down 0.3s ease both; }
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.15) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.animate-bounce-gentle { animation: bounce-gentle 2s ease-in-out infinite; }
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-count-up { animation: count-up 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+
+/* Page-level transition wrapper */
+.page-enter {
+  animation: fade-in 0.4s ease both;
+}
+
+/* Stagger delay utilities */
+.delay-75  { animation-delay: 75ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
