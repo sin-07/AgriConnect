@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { FiShoppingCart, FiMenu, FiX, FiLogOut, FiUser } from "react-icons/fi";
-import { GiWheat } from "react-icons/gi";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -52,10 +52,15 @@ const Navbar = () => {
 
           {/* ── Logo ─────────────────────────────────────────── */}
           <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-            <div className="w-9 h-9 bg-primary-600 rounded-lg flex items-center justify-center shadow-sm group-hover:bg-primary-700 transition-colors">
-              <GiWheat className="text-white text-xl" />
-            </div>
-            <span className="text-[1.15rem] font-extrabold tracking-tight text-gray-900">
+            <Image
+              src="/logo.png"
+              alt="AgriConnect Logo"
+              width={36}
+              height={36}
+              className="rounded-lg object-contain group-hover:scale-105 transition-transform duration-200"
+              priority
+            />
+            <span className="font-display text-[1.15rem] font-extrabold tracking-tight text-gray-900">
               Agri<span className="text-primary-600">Connect</span>
             </span>
           </Link>

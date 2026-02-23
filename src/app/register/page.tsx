@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { UserRole } from "@/types";
 import toast from "react-hot-toast";
-import { GiWheat } from "react-icons/gi";
+import Image from "next/image";
 import { FiUser, FiShoppingBag, FiTruck } from "react-icons/fi";
 
 export default function RegisterPage() {
@@ -132,8 +132,8 @@ function RegisterForm() {
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-gray-50 py-12 px-4">
       <div className="max-w-2xl w-full">
         <div className="text-center mb-8 animate-slide-down">
-          <GiWheat className="text-5xl text-primary-600 mx-auto mb-3 animate-bounce-gentle" />
-          <h1 className="text-3xl font-bold text-gray-900">Create Account</h1>
+          <Image src="/logo.png" alt="AgriConnect" width={64} height={64} className="mx-auto mb-3 animate-bounce-gentle rounded-xl object-contain" />
+          <h1 className="font-display text-3xl font-bold text-gray-900">Create Account</h1>
           <p className="text-gray-600 mt-2">
             Join AgriConnect as a farmer or buyer
           </p>

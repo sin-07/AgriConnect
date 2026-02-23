@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import toast from "react-hot-toast";
-import { GiWheat } from "react-icons/gi";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -51,8 +51,8 @@ export default function LoginPage() {
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-gray-50 py-12 px-4">
       <div className="max-w-md w-full">
         <div className="text-center mb-8 animate-slide-down">
-          <GiWheat className="text-5xl text-primary-600 mx-auto mb-3 animate-bounce-gentle" />
-          <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
+          <Image src="/logo.png" alt="AgriConnect" width={64} height={64} className="mx-auto mb-3 animate-bounce-gentle rounded-xl object-contain" />
+          <h1 className="font-display text-3xl font-bold text-gray-900">Welcome Back</h1>
           <p className="text-gray-600 mt-2">Sign in to your AgriConnect account</p>
         </div>
 

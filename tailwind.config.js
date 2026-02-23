@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans:    ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Georgia", "serif"],
+      },
       animation: {
         'fade-in': 'fade-in 0.4s cubic-bezier(0.22,1,0.36,1) both',
         'slide-up': 'slide-up 0.5s cubic-bezier(0.22,1,0.36,1) both',

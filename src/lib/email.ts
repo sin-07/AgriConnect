@@ -54,7 +54,10 @@ function layout(content: string): string {
 <body>
   <div class="wrap">
     <div class="header">
-      <h1>🌾 AgriConnect</h1>
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:4px;">
+        <img src="https://agri-connect-bay.vercel.app/logo.png" alt="AgriConnect" style="width:48px;height:48px;border-radius:10px;object-fit:contain;" />
+        <h1 style="margin:0;">AgriConnect</h1>
+      </div>
       <p>Connecting Farmers & Buyers Directly</p>
     </div>
     <div class="body">${content}</div>

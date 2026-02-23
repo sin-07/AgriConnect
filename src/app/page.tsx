@@ -39,7 +39,7 @@ export default function HomePage() {
               <GiWheat className="text-base" />
               India&apos;s farmer-first marketplace
             </div>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] tracking-tight mb-6">
+            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] tracking-tight mb-6">
               Farm Fresh,
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-lime-300">
@@ -137,7 +137,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-xs font-bold uppercase tracking-widest text-primary-500 mb-3 block">Why AgriConnect</span>
-            <h2 className="text-4xl font-extrabold text-gray-900 mb-4">Built for those who grow food</h2>
+            <h2 className="font-display text-4xl font-extrabold text-gray-900 mb-4">Built for those who grow food</h2>
             <p className="text-gray-500 max-w-xl mx-auto">A transparent platform that removes friction and puts money back in farmers&apos; hands.</p>
           </div>
 
@@ -196,7 +196,7 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-xs font-bold uppercase tracking-widest text-primary-500 mb-3 block">Process</span>
-            <h2 className="text-4xl font-extrabold text-gray-900">How it works</h2>
+            <h2 className="font-display text-4xl font-extrabold text-gray-900">How it works</h2>
           </div>
 
           <div ref={howItWorks.ref} className="relative">
@@ -250,29 +250,31 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <span className="text-xs font-bold uppercase tracking-widest text-primary-500 mb-3 block">Browse by category</span>
-            <h2 className="text-4xl font-extrabold text-gray-900">What&apos;s on the marketplace</h2>
+            <h2 className="font-display text-4xl font-extrabold text-gray-900">What&apos;s on the marketplace</h2>
           </div>
 
           <div ref={categories.ref} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {[
-              { label: "Vegetables", color: "bg-green-50 border-green-200 hover:bg-green-100", text: "text-green-700", val: "vegetables" },
-              { label: "Fruits",     color: "bg-red-50 border-red-200 hover:bg-red-100",       text: "text-red-700",   val: "fruits" },
-              { label: "Grains",     color: "bg-yellow-50 border-yellow-200 hover:bg-yellow-100", text: "text-yellow-700", val: "grains" },
-              { label: "Pulses",     color: "bg-orange-50 border-orange-200 hover:bg-orange-100", text: "text-orange-700", val: "pulses" },
-              { label: "Spices",     color: "bg-rose-50 border-rose-200 hover:bg-rose-100",    text: "text-rose-700",  val: "spices" },
-              { label: "Dairy",      color: "bg-sky-50 border-sky-200 hover:bg-sky-100",       text: "text-sky-700",   val: "dairy" },
-              { label: "Oilseeds",   color: "bg-amber-50 border-amber-200 hover:bg-amber-100", text: "text-amber-700", val: "oilseeds" },
-              { label: "Flowers",    color: "bg-pink-50 border-pink-200 hover:bg-pink-100",    text: "text-pink-700",  val: "flowers" },
-              { label: "Herbs",      color: "bg-teal-50 border-teal-200 hover:bg-teal-100",    text: "text-teal-700",  val: "herbs" },
-              { label: "Nuts",       color: "bg-lime-50 border-lime-200 hover:bg-lime-100",    text: "text-lime-700",  val: "nuts" },
-              { label: "Other",      color: "bg-gray-50 border-gray-200 hover:bg-gray-100",    text: "text-gray-600",  val: "other" },
-              { label: "View All",   color: "bg-primary-600 border-primary-600 hover:bg-primary-700", text: "text-white font-bold", val: "" },
+              { label: "Vegetables", val: "vegetables" },
+              { label: "Fruits",     val: "fruits" },
+              { label: "Grains",     val: "grains" },
+              { label: "Pulses",     val: "pulses" },
+              { label: "Spices",     val: "spices" },
+              { label: "Dairy",      val: "dairy" },
+              { label: "Oilseeds",   val: "oilseeds" },
+              { label: "Flowers",    val: "flowers" },
+              { label: "Herbs",      val: "herbs" },
+              { label: "Nuts",       val: "nuts" },
+              { label: "Other",      val: "other" },
+              { label: "View All",   val: "" },
             ].map((c, i) => (
               <Link
                 key={c.label}
                 href={`/marketplace${c.val ? `?category=${c.val}` : ""}`}
                 className={`border rounded-2xl px-4 py-5 text-center text-sm font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-md
-                  ${c.color} ${c.text}
+                  ${c.label === "View All"
+                    ? "bg-primary-600 border-primary-600 hover:bg-primary-700 text-white font-bold"
+                    : "bg-primary-50 border-primary-200 hover:bg-primary-100 text-primary-700"}
                   ${categories.visible ? "animate-slide-up" : "opacity-0 translate-y-6"}`}
                 style={{ animationDelay: `${i * 40}ms` }}
               >
@@ -300,7 +302,7 @@ export default function HomePage() {
               <div className="w-14 h-14 bg-emerald-400/25 rounded-2xl flex items-center justify-center mb-6">
                 <GiFarmer className="text-white text-2xl" />
               </div>
-              <h3 className="text-2xl font-extrabold text-white mb-3">Are you a farmer?</h3>
+              <h3 className="font-display text-2xl font-extrabold text-white mb-3">Are you a farmer?</h3>
               <p className="text-primary-200 mb-8 leading-relaxed">List your produce, set your own prices, and reach thousands of buyers directly — no commission, no middleman.</p>
               <Link
                 href="/register?role=farmer"
@@ -314,7 +316,7 @@ export default function HomePage() {
               <div className="w-14 h-14 bg-blue-400/25 rounded-2xl flex items-center justify-center mb-6">
                 <FiShoppingBag className="text-white text-2xl" />
               </div>
-              <h3 className="text-2xl font-extrabold text-white mb-3">Looking to buy?</h3>
+              <h3 className="font-display text-2xl font-extrabold text-white mb-3">Looking to buy?</h3>
               <p className="text-primary-200 mb-8 leading-relaxed">Access seasonal produce at honest farm-gate prices. Order for personal use or bulk industrial requirements.</p>
               <Link
                 href="/register?role=individual"

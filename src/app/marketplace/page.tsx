@@ -81,7 +81,7 @@ export default function MarketplacePage() {
           <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 tracking-wide animate-slide-down">
             <GiWheat className="text-emerald-300" /> Direct from Indian Farms — Zero Brokers
           </span>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight mb-4 animate-fade-in">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight mb-4 animate-fade-in">
             Fresh from the <span className="text-emerald-300">Field</span>
           </h1>
           <p className="text-primary-100/80 text-lg max-w-lg mx-auto mb-10 leading-relaxed animate-fade-in delay-150">

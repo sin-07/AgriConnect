@@ -1,4 +1,6 @@
 import { PDFDocument, StandardFonts, rgb, PageSizes } from "pdf-lib";
+import * as fs from "fs";
+import * as path from "path";
 
 interface ReceiptItem {
   productName: string;
@@ -58,11 +60,26 @@ export async function generateReceiptPDF(data: ReceiptData): Promise<Buffer> {
   const headerH = 80;
   page.drawRectangle({ x: 0, y: height - headerH, width, height: headerH, color: GREEN });
 
+  // Embed logo on the left
+  let textX = margin;
+  const logoSize = 46;
+  try {
+    const logoBytes = fs.readFileSync(path.join(process.cwd(), "public", "logo.png"));
+    const logoImg = await pdfDoc.embedPng(logoBytes);
+    page.drawImage(logoImg, {
+      x: margin,
+      y: height - headerH + (headerH - logoSize) / 2,
+      width: logoSize,
+      height: logoSize,
+    });
+    textX = margin + logoSize + 12;
+  } catch { /* logo not found, skip */ }
+
   page.drawText("AgriConnect", {
-    x: margin, y: height - 38, font: bold, size: 22, color: WHITE,
+    x: textX, y: height - 38, font: bold, size: 22, color: WHITE,
   });
   page.drawText("Connecting Farmers & Buyers Directly", {
-    x: margin, y: height - 58, font: regular, size: 10, color: rgb(0.733, 0.969, 0.816),
+    x: textX, y: height - 58, font: regular, size: 10, color: rgb(0.733, 0.969, 0.816),
   });
   const receiptLabel = "DELIVERY RECEIPT";
   const receiptLabelW = bold.widthOfTextAtSize(receiptLabel, 11);
