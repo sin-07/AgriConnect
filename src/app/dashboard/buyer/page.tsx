@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import toast from "react-hot-toast";
 import { FiShoppingBag, FiClock, FiCheckCircle, FiTruck, FiDownload } from "react-icons/fi";
 import { StatCard } from "@/components/ui/SharedUI";
+import { useGsapDashboard } from "@/hooks/useAnimations";
 
 export default function BuyerDashboard() {
   const { user, isAuthenticated, loading: authLoading } = useAuth();
@@ -14,6 +15,7 @@ export default function BuyerDashboard() {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const dashRef = useGsapDashboard();
 
   const downloadReceipt = async (orderId: string) => {
     setDownloadingId(orderId);
@@ -87,49 +89,57 @@ export default function BuyerDashboard() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div ref={dashRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
-      <div className="mb-8 animate-slide-down">
-        <h1 className="text-3xl font-bold text-gray-900">
+      <div className="gsap-dash-header mb-8">
+        <h1 className="page-header-title text-3xl font-bold text-gray-900">
           {user?.role === "industrial" ? "Industrial" : "Buyer"} Dashboard
         </h1>
-        <p className="text-gray-600 mt-1">
+        <p className="page-header-subtitle text-gray-600 mt-1">
           Welcome back, {user?.name}! Here&apos;s your order history.
         </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <StatCard
-          icon={<FiShoppingBag />}
-          label="Total Orders"
-          value={orders.length.toString()}
-          color="bg-primary-50 text-primary-600"
-        />
-        <StatCard
-          icon={<FiClock />}
-          label="Pending"
-          value={pendingOrders.toString()}
-          color="bg-yellow-50 text-yellow-600"
-        />
-        <StatCard
-          icon={<FiCheckCircle />}
-          label="Delivered"
-          value={deliveredOrders.toString()}
-          color="bg-green-50 text-green-600"
-        />
-        <StatCard
-          icon={<FiTruck />}
-          label="Total Spent"
-          value={`₹${totalSpent.toLocaleString()}`}
-          color="bg-blue-50 text-blue-600"
-        />
+        <div className="gsap-stat-card">
+          <StatCard
+            icon={<FiShoppingBag />}
+            label="Total Orders"
+            value={orders.length.toString()}
+            color="bg-primary-50 text-primary-600"
+          />
+        </div>
+        <div className="gsap-stat-card">
+          <StatCard
+            icon={<FiClock />}
+            label="Pending"
+            value={pendingOrders.toString()}
+            color="bg-yellow-50 text-yellow-600"
+          />
+        </div>
+        <div className="gsap-stat-card">
+          <StatCard
+            icon={<FiCheckCircle />}
+            label="Delivered"
+            value={deliveredOrders.toString()}
+            color="bg-green-50 text-green-600"
+          />
+        </div>
+        <div className="gsap-stat-card">
+          <StatCard
+            icon={<FiTruck />}
+            label="Total Spent"
+            value={`₹${totalSpent.toLocaleString()}`}
+            color="bg-blue-50 text-blue-600"
+          />
+        </div>
       </div>
 
       {/* Orders */}
       {orders.length === 0 ? (
         <div className="text-center py-16 card animate-fade-in">
-          <FiShoppingBag className="text-5xl text-gray-300 mx-auto mb-4 animate-bounce-gentle" />
+          <FiShoppingBag className="text-5xl text-gray-300 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-gray-500">
             No orders yet
           </h3>
@@ -144,9 +154,9 @@ export default function BuyerDashboard() {
           </button>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="gsap-dash-content space-y-4">
           {orders.map((order: any, idx: number) => (
-            <div key={order._id} className="card p-5 animate-slide-up" style={{ animationDelay: `${idx * 60}ms` }}>
+            <div key={order._id} className="card p-5">
               <div className="flex flex-col md:flex-row justify-between gap-4 mb-3">
                 <div>
                   <p className="text-sm text-gray-500 font-mono">

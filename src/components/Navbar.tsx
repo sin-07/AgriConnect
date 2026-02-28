@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { FiShoppingCart, FiMenu, FiX, FiLogOut, FiUser } from "react-icons/fi";
+import gsap from "gsap";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -14,12 +15,71 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const navRef = useRef<HTMLElement>(null);
+  const logoRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // GSAP entrance animation
+  useEffect(() => {
+    const el = navRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      tl.fromTo(
+        ".nav-logo",
+        { x: -30, opacity: 0, scale: 0.8, rotation: -10 },
+        { x: 0, opacity: 1, scale: 1, rotation: 0, duration: 0.7 }
+      );
+
+      tl.fromTo(
+        ".nav-link-item",
+        { y: -20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.4, stagger: 0.08 },
+        "-=0.4"
+      );
+
+      tl.fromTo(
+        ".nav-right-item",
+        { y: -15, opacity: 0, scale: 0.9 },
+        { y: 0, opacity: 1, scale: 1, duration: 0.4, stagger: 0.06 },
+        "-=0.3"
+      );
+    }, el);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Magnetic logo hover — quickTo avoids creating a new tween on every mousemove pixel
+  useEffect(() => {
+    const el = logoRef.current;
+    if (!el) return;
+
+    const xTo = gsap.quickTo(el, "x", { duration: 0.3, ease: "power2.out" });
+    const yTo = gsap.quickTo(el, "y", { duration: 0.3, ease: "power2.out" });
+
+    const handleMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      xTo((e.clientX - rect.left - rect.width / 2) * 0.2);
+      yTo((e.clientY - rect.top - rect.height / 2) * 0.2);
+    };
+    const handleLeave = () => {
+      gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.4)", overwrite: "auto" });
+    };
+
+    el.addEventListener("mousemove", handleMove);
+    el.addEventListener("mouseleave", handleLeave);
+    return () => {
+      el.removeEventListener("mousemove", handleMove);
+      el.removeEventListener("mouseleave", handleLeave);
+    };
   }, []);
 
   const getDashboardLink = () => {
@@ -43,6 +103,7 @@ const Navbar = () => {
 
   return (
     <nav
+      ref={navRef}
       className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${
         scrolled ? "shadow-md" : "shadow-sm border-b border-gray-100"
       }`}
@@ -51,7 +112,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
 
           {/* ── Logo ─────────────────────────────────────────── */}
-          <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
+          <Link ref={logoRef} href="/" className="nav-logo flex items-center gap-2 group flex-shrink-0">
             <Image
               src="/logo.png"
               alt="AgriConnect Logo"
@@ -71,7 +132,7 @@ const Navbar = () => {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`nav-link-item px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   pathname === link.href
                     ? "bg-primary-50 text-primary-700"
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
@@ -90,7 +151,7 @@ const Navbar = () => {
                 {user?.role !== "farmer" && (
                   <Link
                     href="/cart"
-                    className="relative p-2 rounded-lg text-gray-600 hover:text-primary-600 hover:bg-primary-50 transition-colors"
+                    className="nav-right-item relative p-2 rounded-lg text-gray-600 hover:text-primary-600 hover:bg-primary-50 transition-colors"
                   >
                     <FiShoppingCart className="text-xl" />
                     {itemCount > 0 && (
@@ -102,7 +163,7 @@ const Navbar = () => {
                 )}
 
                 {/* User pill */}
-                <div className="flex items-center gap-2 pl-3 border-l border-gray-200">
+                <div className="nav-right-item flex items-center gap-2 pl-3 border-l border-gray-200">
                   <div className="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-semibold text-sm">
                     {user?.name?.[0]?.toUpperCase() ?? <FiUser />}
                   </div>
@@ -120,7 +181,7 @@ const Navbar = () => {
                 </div>
               </>
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="nav-right-item flex items-center gap-2">
                 <Link
                   href="/login"
                   className="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition-colors"

@@ -16,6 +16,8 @@ import {
 } from "react-icons/fi";
 import { GiWheat } from "react-icons/gi";
 import { CATEGORY_PILLS, SORT_OPTIONS } from "@/lib/constants";
+import { useGsapMarketplaceHero, useGsapScrollReveal } from "@/hooks/useAnimations";
+import gsap from "gsap";
 
 
 
@@ -35,6 +37,8 @@ export default function MarketplacePage() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const deferredSearch = useDeferredValue(search);
   const searchRef = useRef<HTMLInputElement>(null);
+  const heroRef = useGsapMarketplaceHero();
+  const productsGridRef = useRef<HTMLDivElement>(null);
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -56,6 +60,28 @@ export default function MarketplacePage() {
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
+  // GSAP stagger for product cards whenever products change
+  useEffect(() => {
+    const el = productsGridRef.current;
+    if (!el || loading || products.length === 0) return;
+
+    const cards = el.querySelectorAll(".gsap-product-entry");
+    if (!cards.length) return;
+
+    gsap.fromTo(
+      cards,
+      { y: 50, opacity: 0, scale: 0.92 },
+      {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.5,
+        stagger: 0.06,
+        ease: "back.out(1.4)",
+      }
+    );
+  }, [products, loading, viewMode]);
+
   const resetFilters = () => {
     setCategory(""); setMarket(""); setOrganic(false);
     setSort("-createdAt"); setSearch(""); setPage(1);
@@ -68,28 +94,28 @@ export default function MarketplacePage() {
     <div className="min-h-screen bg-gray-50">
 
       {/* HERO */}
-      <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-emerald-700 pb-28 pt-14 overflow-hidden">
+      <section ref={heroRef} className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-emerald-700 pb-28 pt-14 overflow-hidden">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-10"
           style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "28px 28px" }}
         />
-        <div aria-hidden="true" className="pointer-events-none absolute -top-24 -right-24 w-96 h-96 rounded-full bg-emerald-500/20 blur-3xl" />
-        <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 w-72 h-72 rounded-full bg-primary-600/30 blur-3xl" />
+        <div aria-hidden="true" className="mp-blob pointer-events-none absolute -top-24 -right-24 w-96 h-96 rounded-full bg-emerald-500/20 blur-3xl" />
+        <div aria-hidden="true" className="mp-blob pointer-events-none absolute bottom-0 left-0 w-72 h-72 rounded-full bg-primary-600/30 blur-3xl" />
 
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 tracking-wide animate-slide-down">
+          <span className="page-header-badge inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 tracking-wide">
             <GiWheat className="text-emerald-300" /> Direct from Indian Farms — Zero Brokers
           </span>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight mb-4 animate-fade-in">
+          <h1 className="page-header-title font-display text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight mb-4">
             Fresh from the <span className="text-emerald-300">Field</span>
           </h1>
-          <p className="text-primary-100/80 text-lg max-w-lg mx-auto mb-10 leading-relaxed animate-fade-in delay-150">
+          <p className="page-header-subtitle text-primary-100/80 text-lg max-w-lg mx-auto mb-10 leading-relaxed">
             Hundreds of seasonal products, priced honestly by the farmers who grow them.
           </p>
           <form
             onSubmit={(e) => { e.preventDefault(); setPage(1); }}
-            className="relative max-w-2xl mx-auto"
+            className="mp-search relative max-w-2xl mx-auto"
           >
             <div className="flex items-center bg-white rounded-2xl shadow-2xl shadow-black/30 overflow-hidden">
               <FiSearch className="absolute left-5 text-gray-400 text-lg pointer-events-none" />
@@ -223,9 +249,9 @@ export default function MarketplacePage() {
             ) : products.length === 0 ? (
               <EmptyState onReset={resetFilters} query={search} category={activeCat.label} />
             ) : (
-              <div className={`grid gap-5 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" : "grid-cols-1"}`}>
-                {products.map((p, idx) => (
-                  <div key={p._id} className="animate-slide-up" style={{ animationDelay: `${idx * 50}ms` }}>
+              <div className={`grid gap-5 ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" : "grid-cols-1"}`} ref={productsGridRef}>
+                {products.map((p) => (
+                  <div key={p._id} className="gsap-product-entry">
                     <ProductCard product={p} listMode={viewMode === "list"} />
                   </div>
                 ))}

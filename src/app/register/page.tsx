@@ -8,6 +8,7 @@ import { UserRole } from "@/types";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import { FiUser, FiShoppingBag, FiTruck } from "react-icons/fi";
+import { useGsapFormReveal } from "@/hooks/useAnimations";
 
 export default function RegisterPage() {
   return (
@@ -45,6 +46,7 @@ function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const router = useRouter();
+  const formRef = useGsapFormReveal();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -129,20 +131,20 @@ function RegisterForm() {
   ];
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-gray-50 py-12 px-4">
+    <div ref={formRef} className="min-h-[calc(100vh-64px)] flex items-center justify-center bg-gray-50 py-12 px-4">
       <div className="max-w-2xl w-full">
-        <div className="text-center mb-8 animate-slide-down">
-          <Image src="/logo.png" alt="AgriConnect" width={64} height={64} className="mx-auto mb-3 animate-bounce-gentle rounded-xl object-contain" />
-          <h1 className="font-display text-3xl font-bold text-gray-900">Create Account</h1>
-          <p className="text-gray-600 mt-2">
+        <div className="text-center mb-8">
+          <Image src="/logo.png" alt="AgriConnect" width={64} height={64} className="gsap-form-logo mx-auto mb-3 rounded-xl object-contain" />
+          <h1 className="page-header-title font-display text-3xl font-bold text-gray-900">Create Account</h1>
+          <p className="page-header-subtitle text-gray-600 mt-2">
             Join AgriConnect as a farmer or buyer
           </p>
         </div>
 
-        <div className="card p-8 animate-scale-in delay-150">
+        <div className="gsap-form-card card p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Role Selection */}
-            <div>
+            <div className="gsap-form-field">
               <label className="block text-sm font-medium text-gray-700 mb-3">
                 I am a...
               </label>
@@ -171,7 +173,7 @@ function RegisterForm() {
             </div>
 
             {/* Basic Info */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="gsap-form-field grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
                   Full Name *
@@ -181,7 +183,6 @@ function RegisterForm() {
                   value={formData.name}
                   onChange={handleChange}
                   className="input-field"
-                  placeholder="John Doe"
                   required
                 />
               </div>
@@ -200,7 +201,7 @@ function RegisterForm() {
               </div>
             </div>
 
-            <div>
+            <div className="gsap-form-field">
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
                 Email Address *
               </label>
@@ -215,7 +216,7 @@ function RegisterForm() {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="gsap-form-field grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
                   Password *
@@ -249,7 +250,7 @@ function RegisterForm() {
             </div>
 
             {/* Address */}
-            <div>
+            <div className="gsap-form-field">
               <h3 className="text-sm font-semibold text-gray-700 mb-3">Address</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
@@ -344,7 +345,7 @@ function RegisterForm() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full py-3 hover:scale-[1.02] active:scale-[0.98] transition-transform"
+              className="gsap-form-btn btn-primary w-full py-3 hover:scale-[1.02] active:scale-[0.98] transition-transform"
             >
               {loading ? "Creating account..." : "Create Account"}
             </button>

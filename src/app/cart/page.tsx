@@ -15,6 +15,7 @@ import {
   FiArrowLeft,
 } from "react-icons/fi";
 import { GiWheat } from "react-icons/gi";
+import { useGsapCartItems, useGsapScaleIn } from "@/hooks/useAnimations";
 
 export default function CartPage() {
   const { user, isAuthenticated } = useAuth();
@@ -32,6 +33,8 @@ export default function CartPage() {
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
+  const cartRef = useGsapCartItems();
+  const emptyRef = useGsapScaleIn();
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,8 +76,8 @@ export default function CartPage() {
 
   if (items.length === 0 && !showCheckout) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center animate-fade-in">
-        <FiShoppingBag className="text-6xl text-gray-300 mx-auto mb-4 animate-bounce-gentle" />
+      <div ref={emptyRef} className="max-w-7xl mx-auto px-4 py-20 text-center">
+        <FiShoppingBag className="text-6xl text-gray-300 mx-auto mb-4" />
         <h2 className="text-2xl font-bold text-gray-500 mb-2">
           Your cart is empty
         </h2>
@@ -89,7 +92,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div ref={cartRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Link
         href="/marketplace"
         className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-medium mb-6"
@@ -97,7 +100,7 @@ export default function CartPage() {
         <FiArrowLeft /> Continue Shopping
       </Link>
 
-      <h1 className="text-3xl font-bold text-gray-900 mb-8 animate-slide-down">Shopping Cart</h1>
+      <h1 className="page-header-title text-3xl font-bold text-gray-900 mb-8">Shopping Cart</h1>
 
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Cart Items */}
@@ -109,7 +112,7 @@ export default function CartPage() {
                 : item.product.localStock;
 
             return (
-              <div key={item.product._id} className="card p-5 animate-slide-up" style={{ animationDelay: `${idx * 80}ms` }}>
+              <div key={item.product._id} className="gsap-cart-item card p-5">
                 <div className="flex gap-4">
                   <div className="w-20 h-20 bg-primary-50 rounded-lg flex items-center justify-center flex-shrink-0">
                     {item.product.imageUrl ? (
@@ -199,7 +202,7 @@ export default function CartPage() {
 
         {/* Order Summary */}
         <div className="lg:col-span-1">
-          <div className="card p-6 sticky top-24 animate-slide-left">
+          <div className="gsap-cart-summary card p-6 sticky top-24">
             <h3 className="font-semibold text-lg text-gray-900 mb-4">
               Order Summary
             </h3>

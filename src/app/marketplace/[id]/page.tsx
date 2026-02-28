@@ -17,6 +17,7 @@ import {
   FiPlus,
 } from "react-icons/fi";
 import { GiWheat } from "react-icons/gi";
+import { useGsapProductDetail } from "@/hooks/useAnimations";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -25,6 +26,7 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const { user, isAuthenticated } = useAuth();
   const { addToCart } = useCart();
+  const detailRef = useGsapProductDetail();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -89,7 +91,7 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div ref={detailRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Link
         href="/marketplace"
         className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-medium mb-6"
@@ -99,7 +101,7 @@ export default function ProductDetailPage() {
 
       <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
         {/* Image */}
-        <div className="bg-gradient-to-br from-primary-100 to-primary-50 rounded-xl flex items-center justify-center h-96 animate-scale-in overflow-hidden">
+        <div className="gsap-product-image bg-gradient-to-br from-primary-100 to-primary-50 rounded-xl flex items-center justify-center h-96 overflow-hidden">
           {product.imageUrl ? (
             <img
               src={product.imageUrl}
@@ -112,15 +114,15 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Details */}
-        <div className="animate-slide-left">
-          <div className="flex items-center gap-2 mb-3">
+        <div>
+          <div className="gsap-product-badge flex items-center gap-2 mb-3">
             <span className="badge-blue capitalize">{product.category}</span>
             {product.isOrganic && <span className="badge-green">Organic</span>}
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
+          <h1 className="gsap-product-title text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
 
-          <div className="flex items-baseline gap-2 mb-6">
+          <div className="gsap-product-price flex items-baseline gap-2 mb-6">
             <span className="text-4xl font-bold text-primary-600">
               ₹{product.pricePerUnit}
             </span>
@@ -132,7 +134,7 @@ export default function ProductDetailPage() {
           </p>
 
           {/* Stock info */}
-          <div className="bg-gray-50 rounded-lg p-4 mb-6 animate-fade-in delay-200">
+          <div className="gsap-product-info bg-gray-50 rounded-lg p-4 mb-6">
             <h3 className="font-semibold text-gray-800 mb-2">Stock Availability</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -151,7 +153,7 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Farmer info */}
-          <div className="bg-green-50 rounded-lg p-4 mb-6 animate-fade-in delay-300">
+          <div className="gsap-product-info bg-green-50 rounded-lg p-4 mb-6">
             <h3 className="font-semibold text-green-800 mb-2">Farmer Details</h3>
             <div className="space-y-1 text-sm">
               <p className="flex items-center gap-2 text-green-700">

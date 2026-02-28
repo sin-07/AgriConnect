@@ -27,6 +27,7 @@ import {
 import { GiWheat } from "react-icons/gi";
 import { StatCard } from "@/components/ui/SharedUI";
 import { CATEGORY_EMOJI, ORDER_STEPS } from "@/lib/constants";
+import { useGsapDashboard } from "@/hooks/useAnimations";
 
 const emptyProduct: ProductFormData = {
   name: "",
@@ -56,6 +57,7 @@ export default function FarmerDashboard() {
   const [submitting, setSubmitting] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [orderFilter, setOrderFilter] = useState<string>("all");
+  const dashRef = useGsapDashboard();
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -235,9 +237,9 @@ export default function FarmerDashboard() {
     : "FM";
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div ref={dashRef} className="min-h-screen bg-gray-50">
       {/* Hero Header */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-primary-700 via-primary-600 to-primary-800 animate-fade-in-fast">
+      <div className="gsap-dash-header relative overflow-hidden bg-gradient-to-br from-primary-700 via-primary-600 to-primary-800">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/20" />
           <div className="absolute -bottom-16 -left-16 w-72 h-72 rounded-full bg-white/10" />
@@ -245,18 +247,18 @@ export default function FarmerDashboard() {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-24">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-4 animate-slide-right">
+            <div className="flex items-center gap-4">
               <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center text-white font-bold text-lg border border-white/30">
                 {initials}
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-white">
+                  <h1 className="page-header-title text-2xl sm:text-3xl font-bold text-white">
                     Welcome back, {user?.name?.split(" ")[0]}!
                   </h1>
                   <span className="text-2xl">👋</span>
                 </div>
-                <p className="text-primary-100 mt-0.5 flex items-center gap-2">
+                <p className="page-header-subtitle text-primary-100 mt-0.5 flex items-center gap-2">
                   <GiWheat className="text-primary-200" />
                   Farmer Dashboard — Manage your farm products & orders
                 </p>
@@ -268,7 +270,7 @@ export default function FarmerDashboard() {
                 setEditingId(null);
                 setActiveTab("add");
               }}
-              className="flex items-center gap-2 bg-white text-primary-700 px-5 py-2.5 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:bg-primary-50 hover:scale-[1.03] active:scale-[0.97] transition-all duration-200 animate-slide-left"
+              className="flex items-center gap-2 bg-white text-primary-700 px-5 py-2.5 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:bg-primary-50 hover:scale-[1.03] active:scale-[0.97] transition-all duration-200"
             >
               <FiPlus className="text-lg" /> Add Product
             </button>
@@ -279,46 +281,54 @@ export default function FarmerDashboard() {
       {/* Stats Cards — overlapping the hero */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-14 relative z-10 mb-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <StatCard
-            icon={<FiPackage />}
-            label="Total Products"
-            value={products.length.toString()}
-            subtitle={`${activeProducts} active`}
-            gradient="from-emerald-500 to-emerald-600"
-            bgLight="bg-emerald-50"
-          />
-          <StatCard
-            icon={<FiTrendingUp />}
-            label="Total Revenue"
-            value={`₹${totalRevenue.toLocaleString()}`}
-            subtitle={`across ${orders.length} orders`}
-            gradient="from-amber-500 to-orange-500"
-            bgLight="bg-amber-50"
-          />
-          <StatCard
-            icon={<FiTruck />}
-            label="Active Orders"
-            value={pendingCount.toString()}
-            subtitle="need attention"
-            gradient="from-blue-500 to-indigo-500"
-            bgLight="bg-blue-50"
-          />
-          <StatCard
-            icon={<FiBox />}
-            label="Total Stock"
-            value={products
-              .reduce((s, p) => s + p.localStock + p.industrialStock, 0)
-              .toLocaleString()}
-            subtitle="units available"
-            gradient="from-violet-500 to-purple-600"
-            bgLight="bg-violet-50"
-          />
+          <div className="gsap-stat-card">
+            <StatCard
+              icon={<FiPackage />}
+              label="Total Products"
+              value={products.length.toString()}
+              subtitle={`${activeProducts} active`}
+              gradient="from-emerald-500 to-emerald-600"
+              bgLight="bg-emerald-50"
+            />
+          </div>
+          <div className="gsap-stat-card">
+            <StatCard
+              icon={<FiTrendingUp />}
+              label="Total Revenue"
+              value={`₹${totalRevenue.toLocaleString()}`}
+              subtitle={`across ${orders.length} orders`}
+              gradient="from-amber-500 to-orange-500"
+              bgLight="bg-amber-50"
+            />
+          </div>
+          <div className="gsap-stat-card">
+            <StatCard
+              icon={<FiTruck />}
+              label="Active Orders"
+              value={pendingCount.toString()}
+              subtitle="need attention"
+              gradient="from-blue-500 to-indigo-500"
+              bgLight="bg-blue-50"
+            />
+          </div>
+          <div className="gsap-stat-card">
+            <StatCard
+              icon={<FiBox />}
+              label="Total Stock"
+              value={products
+                .reduce((s, p) => s + p.localStock + p.industrialStock, 0)
+                .toLocaleString()}
+              subtitle="units available"
+              gradient="from-violet-500 to-purple-600"
+              bgLight="bg-violet-50"
+            />
+          </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         {/* Tabs */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-1.5 mb-6 inline-flex gap-1 animate-fade-in">
+        <div className="gsap-dash-content bg-white rounded-2xl shadow-sm border border-gray-100 p-1.5 mb-6 inline-flex gap-1">
           {[
             { key: "products", label: "My Products", icon: <FiPackage className="text-base" />, count: products.length },
             { key: "orders", label: "Orders", icon: <FiTruck className="text-base" />, count: orders.length },

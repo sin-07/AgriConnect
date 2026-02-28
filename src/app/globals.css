@@ -198,3 +198,28 @@ body {
 .delay-400 { animation-delay: 400ms; }
 .delay-500 { animation-delay: 500ms; }
 .delay-600 { animation-delay: 600ms; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * GRASS LOADER
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+.grass-loader {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 140px;        /* only occupies the bottom band */
+  z-index: 99999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.grass-blade {
+  position: absolute;
+  bottom: 0;
+  border-radius: 40% 60% 0 0 / 60% 40% 0 0;  /* tapered top */
+  background: linear-gradient(to top, #15803d 0%, #22c55e 55%, #4ade80 100%);
+  transform-origin: bottom center;
+  will-change: transform;
+  box-shadow: inset -1px 0 3px rgba(0, 0, 0, 0.15);
+}
