@@ -33,11 +33,7 @@ const Navbar = () => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      tl.fromTo(
-        ".nav-logo",
-        { x: -30, opacity: 0, scale: 0.8, rotation: -10 },
-        { x: 0, opacity: 1, scale: 1, rotation: 0, duration: 0.7 }
-      );
+      
 
       tl.fromTo(
         ".nav-link-item",
